@@ -12,7 +12,6 @@ public class BinarySearchTree<T> {
 	public BinarySearchTree() {
 		root = null;
 	}
-
 	/**
 	 * @param dataInNode
 	 *            Data in the node. Can be an instance of a number or a string
@@ -21,15 +20,12 @@ public class BinarySearchTree<T> {
 	private Prev_Node_Next<T> getNewNode(T dataInNode) {
 		return new Prev_Node_Next<T>(dataInNode);
 	}
-
 	private void insert(Prev_Node_Next<T> parent, T dataInNode) {
-
 		if (isEmpty()) {
 			Prev_Node_Next<T> node = getNewNode(dataInNode);
 			root = parent = node;
 			return;
 		}
-
 		// If new node's element is greater than element in parent,
 		// insert as right child; else, as left child.
 		if (compare(parent.getDataInNode(), dataInNode) != 1) {
@@ -49,9 +45,7 @@ public class BinarySearchTree<T> {
 				parent.setPrev(node);
 			}
 		}
-
 	}
-
 	private boolean isEmpty() {
 		return root == null;
 	}
@@ -62,13 +56,10 @@ public class BinarySearchTree<T> {
 
 	public void inorderTraversal() {
 		inorder(root);
-
 	}
 
 	public void preorderTraversal() {
-
 		preorder(root);
-
 	}
 
 	public void postOrderTraversal() {
@@ -80,11 +71,9 @@ public class BinarySearchTree<T> {
 			System.out.println("Nothing to show. The tree is empty.");
 			return;
 		}
-
 		if (parent.getNext() != null) {
 			postorder(parent.getNext());
 		}
-
 		if (parent.getPrev() != null) {
 			postorder(parent.getPrev());
 		}
@@ -97,11 +86,9 @@ public class BinarySearchTree<T> {
 			System.out.println("Nothing to show. The tree is empty.");
 			return;
 		}
-
 		if (parent.getPrev() != null) {
 			inorder(parent.getPrev());
 		}
-
 		System.out.println(parent.getDataInNode());
 
 		if (parent.getNext() != null) {
@@ -115,8 +102,8 @@ public class BinarySearchTree<T> {
 			System.out.println("Nothing to show. The tree is empty.");
 			return;
 		}
-
 		System.out.println(parent.getDataInNode());
+		
 		if (parent.getPrev() != null) {
 			preorder(parent.getPrev());
 		}
@@ -124,7 +111,6 @@ public class BinarySearchTree<T> {
 		if (parent.getNext() != null) {
 			preorder(parent.getNext());
 		}
-
 	}
 
 	/**
