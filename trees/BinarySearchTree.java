@@ -63,77 +63,53 @@ public class BinarySearchTree<T> {
 		insert(root, dataInNode);
 	}
 
-	public void delete(T data) {
+	public void deleteNode(T data) {
 		if (isEmpty()) {
 			System.out.println("Deletion cannot be performed. The tree is empty.");
 			return;
 		}
 
-		if (!listForDelPurpose.stream().anyMatch(d -> data.equals(data))) {
+		if (!listForDelPurpose.stream().anyMatch(d -> d.equals(data))) {
 			System.out.println("Deletion cannot be performed. The tree doesn't have this data.");
 			return;
 		}
-		// Initialize global variables: parent and toBeProcessedNode to new values.
-		assignValuesToGlobalNodes(data);
-
-		if (toBeProcessedNode.getNext() == null && toBeProcessedNode.getPrev() == null) {
-			deleteLeafNode();
-			return;
-		}
-
-		if (toBeProcessedNode.getNext() != null && toBeProcessedNode.getPrev() != null) {
-			deleteBothChildHavingNode();
-			return;
-		}
-
-		if (toBeProcessedNode.getNext() != null || toBeProcessedNode.getPrev() != null) {
-			deleteSingleChildNode();
-			return;
-		}
-
+		root = delete(root, data);
 	}
 
-	private void assignValuesToGlobalNodes(T data) {
-		parent = null;
-		toBeProcessedNode = root;
-		while (data != toBeProcessedNode.getDataInNode()) {
-			parent = toBeProcessedNode;
-			if (compare(toBeProcessedNode.getDataInNode(), data) == 1) {
-				toBeProcessedNode = toBeProcessedNode.getPrev();
-			} else {
-				toBeProcessedNode = toBeProcessedNode.getNext();
+	private Prev_Node_Next<T> delete(Prev_Node_Next<T> ref, T data) {
+		int compareVal = compare(ref.getDataInNode(), data);
+		// If parent has greater node value
+		if (compareVal == 1) {
+			ref.setPrev(delete(ref.getPrev(), data));
+		}
+		// if parent has lesser node value
+		else if (compareVal == 0) {
+			ref.setNext(delete(ref.getNext(), data));
+		}
+		// If parent's node value and input data are same.
+		else {
+			// If the node has one or no child
+			if (ref.getNext() == null) {
+				return ref.getPrev();
 			}
-		}
-	}
-
-	private void deleteBothChildHavingNode() {
-
-	}
-
-	private void deleteSingleChildNode() {
-		if (compare(parent.getDataInNode(), toBeProcessedNode.getDataInNode()) == 1) {
-			if (toBeProcessedNode.getNext() != null) {
-				parent.setPrev(toBeProcessedNode.getNext());
-			} else {
-				parent.setPrev(toBeProcessedNode.getPrev());
+			if (ref.getPrev() == null) {
+				return ref.getNext();
 			}
 
-		} else {
-			if (toBeProcessedNode.getNext() != null) {
-				parent.setNext(toBeProcessedNode.getNext());
-			} else {
-				parent.setNext(toBeProcessedNode.getPrev());
-			}
+			// If the node has both children
+			ref.setDataInNode(minData(ref.getNext()));
+
+			ref.setNext(delete(ref.getNext(), ref.getDataInNode()));
 		}
+		return ref;
 
 	}
 
-	private void deleteLeafNode() {
-		if (compare(parent.getDataInNode(), toBeProcessedNode.getDataInNode()) == 1) {
-			parent.setPrev(null);
-		} else {
-			parent.setNext(null);
+	private T minData(Prev_Node_Next<T> ref) {
+		while (ref.getPrev() != null) {
+			ref = ref.getPrev();
 		}
+		return ref.getDataInNode();
 	}
 
 	public void inorderTraversal() {
@@ -199,22 +175,26 @@ public class BinarySearchTree<T> {
 	/**
 	 * Compare the elements of current parent and new node
 	 */
-	public int compare(T parentData, T newNodeData) {
-		int result = 0;
+	public int compare(T parentData, T inputData) {
+		int result = -1;
 
 		if (parentData instanceof String) {
-			if (((String) parentData).length() > ((String) newNodeData).length()) {
+			if (((String) parentData).length() > ((String) inputData).length()) {
 				result = 1;
-				return result;
+			} else if (((String) parentData).length() < ((String) inputData).length()) {
+				result = 0;
 			}
 		}
 
 		if (parentData instanceof Number) {
-			if (((Number) parentData).doubleValue() > ((Number) newNodeData).doubleValue()) {
+			if (((Number) parentData).doubleValue() > ((Number) inputData).doubleValue()) {
 				result = 1;
-				return result;
+			} else if (((Number) parentData).doubleValue() < ((Number) inputData).doubleValue()) {
+				result = 0;
 			}
 		}
+		// result will contain -1 if both values are same.
 		return result;
 	}
+
 }
