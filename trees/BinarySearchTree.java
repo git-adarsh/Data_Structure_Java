@@ -1,8 +1,9 @@
-package com.dsj.trees;
+package ds.trees;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.dsj.node.Prev_Node_Next;
+
+import ds.node.Prev_Node_Next;
 
 /**
  * The next field of Prev_Node_Next is treated as right child and the prev field
@@ -33,8 +34,10 @@ public class BinarySearchTree<T> {
 			root = parent = node;
 			return;
 		}
-		// If new node's element is greater than element in parent,
-		// insert as right child; else, as left child.
+		/*
+		 * If new node's element is greater than element in parent, insert as
+		 * right child; else, as left child.
+		 */
 		if (compare(parent.getDataInNode(), dataInNode) != 1) {
 			if (parent.getNext() != null) {
 				parent = parent.getNext();
@@ -113,23 +116,36 @@ public class BinarySearchTree<T> {
 	}
 
 	public void inorderTraversal() {
-		System.out.println("Inorder traversal begins.........");
-		inorder(root);
-	}
-
-	public void preorderTraversal() {
-		preorder(root);
-	}
-
-	public void postOrderTraversal() {
-		postorder(root);
-	}
-
-	private void postorder(Prev_Node_Next<T> parent) {
 		if (isEmpty()) {
 			System.out.println("Nothing to show. The tree is empty.");
 			return;
 		}
+		System.out.println("Inorder traversal begins.");
+		inorder(root);
+		System.out.println("Inorder traversal ends.");
+	}
+
+	public void preorderTraversal() {
+		if (isEmpty()) {
+			System.out.println("Nothing to show. The tree is empty.");
+			return;
+		}
+		System.out.println("Preorder traversal begins.");
+		preorder(root);
+		System.out.println("Preorder traversal ends.");
+	}
+
+	public void postOrderTraversal() {
+		if (isEmpty()) {
+			System.out.println("Nothing to show. The tree is empty.");
+			return;
+		}
+		System.out.println("Postorder traversal begins.");
+		postorder(root);
+		System.out.println("Postorder traversal ends.");
+	}
+
+	private void postorder(Prev_Node_Next<T> parent) {
 		if (parent.getNext() != null) {
 			postorder(parent.getNext());
 		}
@@ -140,11 +156,6 @@ public class BinarySearchTree<T> {
 	}
 
 	private void inorder(Prev_Node_Next<T> parent) {
-
-		if (isEmpty()) {
-			System.out.println("Nothing to show. The tree is empty.");
-			return;
-		}
 		if (parent.getPrev() != null) {
 			inorder(parent.getPrev());
 		}
@@ -157,10 +168,6 @@ public class BinarySearchTree<T> {
 	}
 
 	private void preorder(Prev_Node_Next<T> parent) {
-		if (isEmpty()) {
-			System.out.println("Nothing to show. The tree is empty.");
-			return;
-		}
 		System.out.println(parent.getDataInNode());
 
 		if (parent.getPrev() != null) {
@@ -169,6 +176,36 @@ public class BinarySearchTree<T> {
 
 		if (parent.getNext() != null) {
 			preorder(parent.getNext());
+		}
+	}
+
+	/**
+	 * Height of the tree
+	 */
+	public void findHeightOfTheTree() {
+		if (isEmpty()) {
+			System.out.println("The tree is empty.");
+			return;
+		}
+		System.out.println("Height: " + height(root));
+	}
+
+	private int height(Prev_Node_Next<T> parent) {
+		int leftHeight = 0;
+		int rightHeight = 0;
+
+		if (parent.getPrev() != null) {
+			leftHeight = leftHeight + height(parent.getPrev());
+		}
+
+		if (parent.getNext() != null) {
+			rightHeight = rightHeight + height(parent.getNext());
+		}
+
+		if (rightHeight > leftHeight) {
+			return rightHeight + 1;
+		} else {
+			return leftHeight + 1;
 		}
 	}
 
@@ -196,5 +233,4 @@ public class BinarySearchTree<T> {
 		// result will contain -1 if both values are same.
 		return result;
 	}
-
 }
