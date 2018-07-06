@@ -1,9 +1,8 @@
-package ds.trees;
+package com.dsj.trees;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import ds.node.Prev_Node_Next;
+import com.dsj.node.Prev_Node_Next;
 
 /**
  * The next field of Prev_Node_Next is treated as right child and the prev field
