@@ -7,15 +7,23 @@ public abstract class SortingUtils {
 	int sizeOfArr;
 	String dataType = "String";
 	Object[] unsortedArr;
+	Scanner sc;
 
-	SortingUtils(int sizeOfArr) {
-		this.sizeOfArr = sizeOfArr;
+	/** Take the size of the input and initialize the unsorted array. */
+	SortingUtils() {
+		System.out.println("Enter the size of your list:");
+		sc = new Scanner(System.in);
+		this.sizeOfArr = sc.nextInt();
 		initializeUnsortedArr();
 	}
 
+	/**
+	 * Depending on the input provided, the sorting algo will sort the inputs. If a
+	 * number is provided it sorts the number based on their value. If the input is
+	 * anything but a number, it sorts based on its length.
+	 */
 	void initializeUnsortedArr() {
 		System.out.println("Enter your items:");
-		Scanner sc = new Scanner(System.in);
 		String typeTestVar = sc.next();
 
 		if (isOfTypeNumber(typeTestVar)) {
@@ -36,18 +44,28 @@ public abstract class SortingUtils {
 	}
 
 	private boolean isOfTypeNumber(String typeTestVar) {
-		return typeTestVar.matches("[0-9]+");
+		return typeTestVar.matches("^[-\\+]?\\d*.?\\d+$");
 	}
-	
+
 	public void display() {
-		for(int i = 0;i<sizeOfArr;i++) {
-			System.out.print(unsortedArr[i]);
+		System.out.println("The sorted array is: ");
+		for (int i = 0; i < sizeOfArr; i++) {
+			System.out.print(unsortedArr[i] + "\t");
 		}
 	}
 
-	abstract void sort();
-	
+	public void sort() {
+		if (dataType.equalsIgnoreCase("String")) {
+			this.sortArrayOfStrings();
+		} else {
+			this.sortArrayOfNumbers();
+		}
+	}
+
+	/**
+	 * To be implemented by each sorting class.
+	 */
 	abstract void sortArrayOfNumbers();
-	
+
 	abstract void sortArrayOfStrings();
 }
