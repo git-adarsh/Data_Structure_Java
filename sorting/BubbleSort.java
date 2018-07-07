@@ -2,28 +2,21 @@ package com.dsj.sorting;
 
 public class BubbleSort extends SortingUtils {
 
-	public BubbleSort(int sizeOfArr) {
-		super(sizeOfArr);
-	}
+	int i;
+	int j;
 
-	@Override
-	public
-	void sort() {
-		if (dataType.equalsIgnoreCase("String")) {
-			sortArrayOfStrings();
-		} else {
-			sortArrayOfNumbers();
-		}
+	public BubbleSort() {
+		super();
 	}
 
 	@Override
 	void sortArrayOfNumbers() {
-		for (int i = sizeOfArr - 1; i <= 0; i--) {
-			for (int j = i; j <= 0; j--) {
-				if ((Double) unsortedArr[j] < (Double) unsortedArr[j - 1]) {
+		for (i = 0; i < sizeOfArr - 1; i++) {
+			for (j = 0; j < sizeOfArr - i - 1; j++) {
+				if ((Double) unsortedArr[j] > (Double) unsortedArr[j + 1]) {
 					Double temp = (Double) unsortedArr[j];
-					unsortedArr[j] = unsortedArr[j - 1];
-					unsortedArr[j - 1] = temp;
+					unsortedArr[j] = unsortedArr[j + 1];
+					unsortedArr[j + 1] = temp;
 				}
 			}
 		}
@@ -31,12 +24,12 @@ public class BubbleSort extends SortingUtils {
 
 	@Override
 	void sortArrayOfStrings() {
-		for (int i = sizeOfArr - 1; i <= 0; i--) {
-			for (int j = i; j <= 0; j--) {
-				if (((String) unsortedArr[j]).length() < ((String) unsortedArr[j - 1]).length()) {
+		for (i = 0; i < sizeOfArr - 1; i++) {
+			for (j = 0; j < sizeOfArr - i - 1; j++) {
+				if (((String) unsortedArr[j]).length() > ((String) unsortedArr[j + 1]).length()) {
 					String temp = (String) unsortedArr[j];
-					unsortedArr[j] = unsortedArr[j - 1];
-					unsortedArr[j - 1] = temp;
+					unsortedArr[j] = unsortedArr[j + 1];
+					unsortedArr[j + 1] = temp;
 				}
 			}
 		}
