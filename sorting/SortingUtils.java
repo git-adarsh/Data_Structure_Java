@@ -1,11 +1,12 @@
 package com.dsj.sorting;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public abstract class SortingUtils {
 
 	int sizeOfArr;
-	String dataType = "String";
+	boolean dataTypeNumber = false;
 	Object[] unsortedArr;
 	Scanner sc;
 
@@ -18,16 +19,16 @@ public abstract class SortingUtils {
 	}
 
 	/**
-	 * Depending on the input provided, the sorting algo will sort the inputs. If a
-	 * number is provided it sorts the number based on their value. If the input is
-	 * anything but a number, it sorts based on its length.
+	 * Depending on the input provided, the sorting algorithm will sort the inputs.
+	 * If a number is provided it sorts the number based on their value. If the
+	 * input is anything but a number, it sorts based on its length.
 	 */
 	void initializeUnsortedArr() {
 		System.out.println("Enter your items:");
 		String typeTestVar = sc.next();
 
 		if (isOfTypeNumber(typeTestVar)) {
-			dataType = "Number";
+			dataTypeNumber = true;
 			unsortedArr = new Number[sizeOfArr];
 			unsortedArr[0] = Double.parseDouble(typeTestVar);
 			for (int i = 1; i < sizeOfArr; i++) {
@@ -49,13 +50,11 @@ public abstract class SortingUtils {
 
 	public void display() {
 		System.out.println("The sorted array is: ");
-		for (int i = 0; i < sizeOfArr; i++) {
-			System.out.print(unsortedArr[i] + "\t");
-		}
+		Arrays.stream(unsortedArr).forEach(System.out::println);
 	}
 
 	public void sort() {
-		if (dataType.equalsIgnoreCase("String")) {
+		if (!dataTypeNumber) {
 			this.sortArrayOfStrings();
 		} else {
 			this.sortArrayOfNumbers();
