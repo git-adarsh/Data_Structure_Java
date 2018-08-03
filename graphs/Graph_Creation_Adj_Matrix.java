@@ -2,52 +2,22 @@ package com.dsj.graphs;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 
 /**
- * Implementation of an undirected-cyclic-graph
+ * Implementation of an undirected-cyclic-graph using adjacency-matrix.
  * 
  * IMPORTANT: This code assumes that the name of the vertices are unique.
  */
 
-public class Graph_Creation_Adj_Matrix {
+public class Graph_Creation_Adj_Matrix extends Graph_Utils {
 
-	Scanner sc;
-	Map<Integer, String> arrIndexToVertexMap;
-
-	int numberOfVertices;
 	int[][] adjMatrix;
 
 	public Graph_Creation_Adj_Matrix() {
-		getNumberOfVertices();
+		super();
 		adjMatrix = new int[numberOfVertices][numberOfVertices];
 		getVertices();
-	}
-
-	/**
-	 * Get the name of the vertices. Every thing that is entered is assumed
-	 * taken-in as a string.
-	 */
-	private void getVertices() {
-		System.out.println("Enter your vertices:");
-		arrIndexToVertexMap = new HashMap<>();
-		try {
-			for (int i = 0; i < numberOfVertices; i++) {
-				arrIndexToVertexMap.put(i, sc.next());
-			}
-			sc.close();
-		} catch (RuntimeException re) {
-			System.out.println("Error at method:: getVertices || Description:" + re);
-		}
-	}
-
-	private void getNumberOfVertices() {
-		sc = new Scanner(System.in);
-		System.out.println("Enter the total number of vertices.");
-		numberOfVertices = sc.nextInt();
 	}
 
 	/**
@@ -63,9 +33,9 @@ public class Graph_Creation_Adj_Matrix {
 		int v1 = getIndexForThis(from);
 		int v2 = getIndexForThis(to);
 		if (adjMatrix[v1][v2] == 1) {
-			System.out.println("These two persons are friends.");
+			System.out.println(MessageFormat.format("{0} and {1} are friends.", from, to));
 		} else {
-			System.out.println("These two persons are not friends..");
+			System.out.println(MessageFormat.format("{0} and {1} are not friends.", from, to));
 		}
 	}
 
@@ -107,36 +77,40 @@ public class Graph_Creation_Adj_Matrix {
 			adjMatrix[v1][v2] = 0;
 			adjMatrix[v2][v1] = 0;
 			System.out.println("Unfriended.");
-
 		}
 	}
 
 	/**
-	 * SHow all the vertices(friends) connected to this vertex and all the
+	 * Show all the vertices(friends) connected to this vertex and all the
 	 * indirectly connected(mutual friends) of this node.
 	 * 
-	 * @param vertex
-	 * 
 	 */
-	public void getVertexInfo(String vertex) {
+	public void showVertexInfo(String vertex) {
 		int index = getIndexForThis(vertex);
+
+		if (!hasAnyFriend(index)) {
+			System.out.println(vertex + ", you have not added any friends.");
+			return;
+		}
 		showConnectedVertices(index);
 		showMutualVertices(index);
 	}
 
 	/**
-	 * @param vertex
-	 *            Name of the vertex
-	 * @return The unique index for this string from the hash-map.
+	 * @param index
+	 *            Index of the vertex
+	 * @return a boolean value based on whether this vertex has any
+	 *         friend(connection).
 	 */
-	private int getIndexForThis(String vertex) {
-		int i = 0;
-		for (; i < numberOfVertices; i++) {
-			if (arrIndexToVertexMap.get(i).equalsIgnoreCase(vertex)) {
+	private boolean hasAnyFriend(int index) {
+		boolean hasAnyFriend = false;
+		for (int i = 0; i < numberOfVertices; i++) {
+			if (adjMatrix[index][i] == 1) {
+				hasAnyFriend = true;
 				break;
 			}
 		}
-		return i;
+		return hasAnyFriend;
 	}
 
 	/**
@@ -156,7 +130,6 @@ public class Graph_Creation_Adj_Matrix {
 				System.out.print(arrIndexToVertexMap.get(j));
 				separator = ", ";
 			}
-
 		}
 		System.out.println();
 	}
@@ -188,7 +161,7 @@ public class Graph_Creation_Adj_Matrix {
 			}
 		}
 		if (!mutualVerticesIndex.isEmpty()) {
-			System.out.println(MessageFormat.format("The mutual friends for {0} and {1} are: ", arrIndexToVertexMap.get(index1),
+			System.out.println(MessageFormat.format("{0}, your mutual friends with {1} are: ", arrIndexToVertexMap.get(index1),
 					arrIndexToVertexMap.get(index2)));
 			mutualVerticesIndex.forEach(index -> {
 				System.out.print(separator[0] + arrIndexToVertexMap.get(index));
