@@ -1,1 +1,42 @@
 https://algorithms.tutorialhorizon.com/prims-minimum-spanning-tree-mst-using-adjacency-list-and-min-heap/
+package com.dsj.gp;
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Prim {
+
+	int numOfVertices;
+	int[] vertices;
+
+	public Prim(int numOfVertices) {
+		System.out.println("Enter the number of vertices: ");
+		this.numOfVertices = numOfVertices;
+		vertices = new int[numOfVertices];
+		takeVertices();
+	}
+
+	public void takeVertices() {
+		System.out.println("Enter your vertices");
+		int j;
+		Scanner sc = new Scanner(System.in);
+		for (int i = 0; i < numOfVertices / 2; i++) {
+				vertices[i] = sc.nextInt();
+				j = 2*i+1;
+				if(j == numOfVertices) {
+					break;
+				}
+				vertices[2 * i + 1] = sc.nextInt();
+				j = j+2;
+				if(j == numOfVertices) {
+					break;
+				}
+				vertices[2 * i + 2] = sc.nextInt();
+			}
+		sc.close();
+		Arrays.stream(vertices).forEach(System.out::print);
+	}
+	public static void main(String[] args) {
+		new Prim(3);
+	}
+}
