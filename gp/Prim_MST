@@ -1,42 +1,22 @@
-https://algorithms.tutorialhorizon.com/prims-minimum-spanning-tree-mst-using-adjacency-list-and-min-heap/
 package com.dsj.gp;
 
-import java.util.Arrays;
-import java.util.Scanner;
+import com.dsj.graphs.Graph_Creation_Adj_List;
 
-public class Prim {
+public class Prim_MST extends MST_Utils {
 
+	final static int INITIALIZE_VALUE = Integer.MAX_VALUE;
+	Graph_Creation_Adj_List graph_to_be_traversed;
+
+	int[] weight;
+	String[] parent;
+	
 	int numOfVertices;
-	int[] vertices;
-
-	public Prim(int numOfVertices) {
-		System.out.println("Enter the number of vertices: ");
-		this.numOfVertices = numOfVertices;
-		vertices = new int[numOfVertices];
-		takeVertices();
+	
+	public Prim_MST(Graph_Creation_Adj_List graph_to_be_traversed) {
+		this.graph_to_be_traversed = graph_to_be_traversed;
+		numOfVertices = graph_to_be_traversed.numberOfVertices;
+		weight = new int[numOfVertices];
+		parent = new String[numOfVertices];
 	}
 
-	public void takeVertices() {
-		System.out.println("Enter your vertices");
-		int j;
-		Scanner sc = new Scanner(System.in);
-		for (int i = 0; i < numOfVertices / 2; i++) {
-				vertices[i] = sc.nextInt();
-				j = 2*i+1;
-				if(j == numOfVertices) {
-					break;
-				}
-				vertices[2 * i + 1] = sc.nextInt();
-				j = j+2;
-				if(j == numOfVertices) {
-					break;
-				}
-				vertices[2 * i + 2] = sc.nextInt();
-			}
-		sc.close();
-		Arrays.stream(vertices).forEach(System.out::print);
-	}
-	public static void main(String[] args) {
-		new Prim(3);
-	}
 }
