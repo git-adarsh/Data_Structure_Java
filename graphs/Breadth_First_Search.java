@@ -42,7 +42,7 @@ public class Breadth_First_Search {
 
 	private void insertAdjVertices(int index) {
 		graph_to_be_searched.adjList[index].forEach(connectedNodes -> {
-			int temp = graph_to_be_searched.getIndexForThis(connectedNodes);
+			int temp = graph_to_be_searched.getIndexForThis(connectedNodes.getVertexId());
 			if (!visitedVertexArr[temp]) {
 				if (!queue.contains(temp)) {
 					queue.add(temp);
