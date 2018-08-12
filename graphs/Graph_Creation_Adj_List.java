@@ -2,6 +2,9 @@ package com.dsj.graphs;
 
 import java.text.MessageFormat;
 import java.util.LinkedList;
+import java.util.List;
+
+import com.dsj.gp.WeightedNode;
 
 /**
  * Implementation of an undirected-cyclic-graph using adjacency-lists.
@@ -10,9 +13,8 @@ import java.util.LinkedList;
  */
 public class Graph_Creation_Adj_List extends Graph_Utils {
 
-	LinkedList<String>[] adjList;
+	LinkedList<WeightedNode>[] adjList;
 
-	@SuppressWarnings("unchecked")
 	public Graph_Creation_Adj_List() {
 		super();
 		adjList = new LinkedList[numberOfVertices];
@@ -22,7 +24,7 @@ public class Graph_Creation_Adj_List extends Graph_Utils {
 
 	private void initializeLinkedLists() {
 		for (int i = 0; i < numberOfVertices; i++) {
-			adjList[i] = new LinkedList<String>();
+			adjList[i] = new LinkedList<WeightedNode>();
 		}
 	}
 
@@ -34,20 +36,24 @@ public class Graph_Creation_Adj_List extends Graph_Utils {
 	 * @param to
 	 *            Vertex 2
 	 */
-	public void addAnEdge(String from, String to) {
+	public void addAnEdge(String from, String to, int weight) {
 		int v1 = getIndexForThis(from);
 		int v2 = getIndexForThis(to);
 
-		if (adjList[v1].contains(to)) {
+		if (doesListContainThisNode(v1, to)) {
 			System.out.println(MessageFormat.format("{0} and {1} this are friends already.", from, to));
 			return;
 		}
 
-		adjList[v1].add(to);
-		adjList[v2].add(from);
+		adjList[v1].add(new WeightedNode(to, weight));
+		adjList[v2].add(new WeightedNode(from, weight));
 
-		System.out.println(MessageFormat.format("{0}, you are now friends with {1}.", from, to));
+		System.out.println(MessageFormat.format("{0}, you are now friends with {1}. Your friendship is {2} years old.", from, to, weight));
 
+	}
+
+	private boolean doesListContainThisNode(int v1, String to) {
+		return adjList[v1].stream().anyMatch(connectedNode -> connectedNode.getVertexId().equals(to));
 	}
 
 	/**
@@ -62,7 +68,7 @@ public class Graph_Creation_Adj_List extends Graph_Utils {
 	void isAnEdgeFromTo(String from, String to) {
 		int v1 = getIndexForThis(from);
 
-		if (adjList[v1].contains(to)) {
+		if (doesListContainThisNode(v1, to)) {
 			System.out.println("These two persons are friends.");
 		} else {
 			System.out.println("These two persons are not friends..");
@@ -81,14 +87,26 @@ public class Graph_Creation_Adj_List extends Graph_Utils {
 		int v1 = getIndexForThis(from);
 		int v2 = getIndexForThis(to);
 
-		if (!adjList[v1].contains(to)) {
+		if (!doesListContainThisNode(v1, to)) {
 			System.out.println(MessageFormat.format("{0} and {1} aren't friends.)", from, to));
 			return;
 		} else {
-			adjList[v1].remove(to);
-			adjList[v2].remove(from);
+			adjList[v1].remove(getAddressToThisNode(v1, to));
+			adjList[v2].remove(getAddressToThisNode(v2, from));
 			System.out.println("Unfriended.");
 		}
+	}
+
+	private WeightedNode getAddressToThisNode(int index, String to) {
+		List<WeightedNode> tempList = adjList[index];
+		WeightedNode requireVal = null;
+
+		for (int i = 0; i < tempList.size(); i++) {
+			if (tempList.get(i).getVertexId().equals(to)) {
+				requireVal = adjList[index].get(i);
+			}
+		}
+		return requireVal;
 	}
 
 	/**
@@ -122,7 +140,7 @@ public class Graph_Creation_Adj_List extends Graph_Utils {
 
 		adjList[index].forEach(friend -> {
 			System.out.print(separator[0]);
-			System.out.print(friend);
+			System.out.print(friend.getVertexId());
 			separator[0] = ", ";
 		});
 		System.out.println();
@@ -146,13 +164,13 @@ public class Graph_Creation_Adj_List extends Graph_Utils {
 	}
 
 	private void getMutualForTheseTwo(int index, int i) {
-		System.out.println(
-				MessageFormat.format("{0}, your mutual friends with {1} are:", arrIndexToVertexMap.get(index), arrIndexToVertexMap.get(i)));
+		System.out.println(MessageFormat.format("{0}, your mutual friends with {1} are:",
+				arrIndexToVertexMap.get(index), arrIndexToVertexMap.get(i)));
 
 		final String[] separator = { "" };
 		adjList[index].forEach(friend -> {
-			if (adjList[i].contains(friend)) {
-				System.out.print(separator[0] + friend);
+			if (doesListContainThisNode(i, friend.getVertexId())) {
+				System.out.print(separator[0] + friend.getVertexId());
 				separator[0] = ", ";
 			}
 		});
