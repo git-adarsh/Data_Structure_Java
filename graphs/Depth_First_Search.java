@@ -51,23 +51,9 @@ public class Depth_First_Search {
 					stack.push(indexForVal);
 			}
 		});
-//		System.out.println(stack.toString());
 	}
 
 	private boolean isVisited(int index) {
 		return visitedNodeTrackerArr[index];
 	}
-	/* void DFS(int vertex)
-	    {
-	        visited[vertex] = true;
-	        System.out.print(vertex + " ");
-	 
-	        Iterator ite = adjLists[vertex].listIterator();
-	        while (ite.hasNext())
-	        {
-	            int adj = ite.next();
-	            if (!visited[adj])
-	                DFS(adj);
-	        }
-	    }*/
 }
