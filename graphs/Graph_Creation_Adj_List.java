@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dsj.gp.Prim_MST;
 import com.dsj.gp.WeightedNode;
 
 /**
@@ -13,8 +14,9 @@ import com.dsj.gp.WeightedNode;
  */
 public class Graph_Creation_Adj_List extends Graph_Utils {
 
-	LinkedList<WeightedNode>[] adjList;
+	public LinkedList<WeightedNode>[] adjList;
 
+	@SuppressWarnings("unchecked")
 	public Graph_Creation_Adj_List() {
 		super();
 		adjList = new LinkedList[numberOfVertices];
@@ -164,8 +166,8 @@ public class Graph_Creation_Adj_List extends Graph_Utils {
 	}
 
 	private void getMutualForTheseTwo(int index, int i) {
-		System.out.println(MessageFormat.format("{0}, your mutual friends with {1} are:",
-				arrIndexToVertexMap.get(index), arrIndexToVertexMap.get(i)));
+		System.out.println(
+				MessageFormat.format("{0}, your mutual friends with {1} are:", arrIndexToVertexMap.get(index), arrIndexToVertexMap.get(i)));
 
 		final String[] separator = { "" };
 		adjList[index].forEach(friend -> {
@@ -175,5 +177,12 @@ public class Graph_Creation_Adj_List extends Graph_Utils {
 			}
 		});
 		System.out.println();
+	}
+
+	/**
+	 * Return the path that traverses all nodes at minimum cost.
+	 */
+	public void findMSTUsingPrim() {
+		new Prim_MST(this);
 	}
 }
