@@ -1,6 +1,7 @@
 package com.dsj.gp;
 
 import com.dsj.graphs.Graph_Creation_Adj_List;
+import com.dsj.graphs.WeightedNode;
 
 /**
  * IMPORTANT: This algorithm is not optimized. It is an implementation of Prim's
